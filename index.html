@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+    content="GST: Precise 3D Human Body from a Single Image with Gaussian Splatting Transformers.">
+  <meta name="keywords" content="GST, Diffusion, 3D, Radiance Fields, NeRF, 3D Object">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GST: Precise 3D Human Body from a Single Image with Gaussian Splatting Transformers</title>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+
+</head>
+<body data-new-gr-c-s-check-loaded="14.1089.0" data-gr-ext-installed="" class="vsc-initialized">
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">GST: Precise 3D Human Body from a Single Image with Gaussian Splatting Transformers
+            </h1>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="https://eng.ox.ac.uk/people/lorenza-prospero/">Lorenza Prospero</a>,</span>
+              <span class="author-block">
+              <span class="author-block">
+                <a href="https://abdullahamdi.com/">Abdullah Hamdi</a>,</span>
+              <span class="author-block">
+                <a href="https://www.robots.ox.ac.uk/~joao/">Joao F. Henriques</a>,</span>
+              </span>
+              <span class="author-block">
+                <a href="https://chrirupp.github.io/">Christian Rupprecht</a>
+              </span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">Visual Geometry Group, University of Oxford</span>
+            </div>
+            <!-- <div class="is-size-6 publication-authors">
+              (Work was done during Abdullah’s internship at TUM as well as work at KAUST.)
+            </div> -->
+            <!-- <div class="is-size-4 publication-authors">
+              <h4 class="title is-4 publication-title">[ICCV 2023]
+              </h4>            </div> -->
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- PDF Link. -->
+                <span class="link-block">
+                  <a href="https://abdullahamdi.com/sparf/static/assets/gst.pdf"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <svg class="svg-inline--fa fa-file-pdf fa-w-12" aria-hidden="true" focusable="false"
+                        data-prefix="fas" data-icon="file-pdf" role="img" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 384 512" data-fa-i2svg="">
+                        <path fill="currentColor"
+                          d="M181.9 256.1c-5-16-4.9-46.9-2-46.9 8.4 0 7.6 36.9 2 46.9zm-1.7 47.2c-7.7 20.2-17.3 43.3-28.4 62.7 18.3-7 39-17.2 62.9-21.9-12.7-9.6-24.9-23.4-34.5-40.8zM86.1 428.1c0 .8 13.2-5.4 34.9-40.2-6.7 6.3-29.1 24.5-34.9 40.2zM248 160h136v328c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V24C0 10.7 10.7 0 24 0h200v136c0 13.2 10.8 24 24 24zm-8 171.8c-20-12.2-33.3-29-42.7-53.8 4.5-18.5 11.6-46.6 6.2-64.2-4.7-29.4-42.4-26.5-47.8-6.8-5 18.3-.4 44.1 8.1 77-11.6 27.6-28.7 64.6-40.8 85.8-.1 0-.1.1-.2.1-27.1 13.9-73.6 44.5-54.5 68 5.6 6.9 16 10 21.5 10 17.9 0 35.7-18 61.1-61.8 25.8-8.5 54.1-19.1 79-23.2 21.7 11.8 47.1 19.5 64 19.5 29.2 0 31.2-32 19.7-43.4-13.9-13.6-54.3-9.7-73.6-7.2zM377 105L279 7c-4.5-4.5-10.6-7-17-7h-6v128h128v-6.1c0-6.3-2.5-12.4-7-16.9zm-74.1 255.3c4.1-2.7-2.5-11.9-42.8-9 37.1 15.8 42.8 9 42.8 9z">
+                        </path>
+                      </svg><!-- <i class="fas fa-file-pdf"></i> Font Awesome fontawesome.com -->
+                    </span>
+                    <span>Paper</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="#" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                    </span>
+                    <span>arXiv</span>
+                  </a>
+                </span>
+                <!-- Video Link. -->
+                <span class="link-block">
+                  <a href="#" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <svg class="svg-inline--fa fa-youtube fa-w-18" aria-hidden="true" focusable="false"
+                        data-prefix="fab" data-icon="youtube" role="img" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 576 512" data-fa-i2svg="">
+                        <path fill="currentColor"
+                          d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z">
+                        </path>
+                      </svg><!-- <i class="fab fa-youtube"></i> Font Awesome fontawesome.com -->
+                    </span>
+                    <span>Video</span>
+                  </a>
+                </span>
+
+
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/prosperolo/GST" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                </a>
+              </span>
+              <!-- Dataset Link. -->
+              <!-- <span class="link-block">
+                <a href="https://github.com/ajhamdi/sparf_pytorch"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="far fa-images"></i>
+                  </span>
+                  <span>Data</span> -->
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <div class="vsc-controller"></div>
+
+
+        <!-- <video id="teaser" autoplay="" muted="" playsinline loop="" width="32%">
+          <source src="static/assets/teaser/vox32.mp4" type="video/mp4">
+        </video>
+        <script>
+          var v = document.getElementById("teaser");
+          v.playbackRate = 1.0;
+        </script> -->
+        <img src="static/assets/teaser/input.png" width="32%">
+
+        <video id="teaser" autoplay="" muted="" playsinline loop="" width="32%">
+          <source src="static/assets/teaser/out_smpl.mp4" type="video/mp4">
+        </video>
+        <script>
+          var v = document.getElementById("teaser");
+          v.playbackRate = 1.0;
+
+        </script>
+        <video id="teaser" autoplay="" muted="" playsinline loop="" width="32%">
+          <source src="static/assets/teaser/out.mp4" type="video/mp4">
+        </video>
+        <script>
+          var v = document.getElementById("teaser");
+          v.playbackRate = 1.0;
+
+        </script>
+        <p>
+          <span
+            style="display: inline-block; width: 32%; text-align: center; font-size: larger; font-weight: bold;">Input Image</span>
+          <span
+            style="display: inline-block; width: 32%; text-align: center; font-size: larger; font-weight: bold;">Output Precise 3D Human Body</span>
+          <span
+            style="display: inline-block; width: 32%; text-align: center; font-size: larger; font-weight: bold;">Novel views Renderings</span>
+        </p>
+        <br>
+        <h2 class=" subtitle has-text-centered">
+          given a <em>single</em> input image, Gaussian Splatting Transformers <em>(GST)</em> predicts precise 3D human pose and shape, and a color model that enables novel view rendering including clothes.         <br> GST is fast (50 FPS) and relies only on multi-view supervision (<em>no 3D supervision used</em>).
+        </h2>
+
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- <section class="hero is-light is-small">
+        <div class="hero-body">
+            <div class="container">
+                <div id="results-carousel" class="carousel results-carousel">
+                    <div class="item item-steve">
+                        <video poster="" id="steve" autoplay controls muted loop height="100%">
+                            <source src="static/nuscenes/3edd8c1ef10b4f4e889e016cb56035e6.mp4" type="video/mp4">
+                        </video>
+                        <img src="static/nuscenes/3edd8c1ef10b4f4e889e016cb56035e6.jpg" />
+                    </div>
+                    <div class="item item-blueshirt">
+                        <video poster="" id="blueshirt" autoplay controls muted loop height="100%">
+                            <source src="static/nuscenes/ec7bb4009f5b42f6b497501b223ba8b2.mp4" type="video/mp4">
+                        </video>
+                        <img src="static/nuscenes/ec7bb4009f5b42f6b497501b223ba8b2.jpg" />
+                    </div>
+                    <div class="item item-fullbody">
+                        <video poster="" id="fullbody" autoplay controls muted loop height="100%">
+                            <source src="static/nuscenes/8166595e053d469ca5fcb0e12b45b068.mp4" type="video/mp4">
+                        </video>
+                        <img src="static/nuscenes/8166595e053d469ca5fcb0e12b45b068.jpg" />
+                    </div>
+                    <div class="item item-shiba">
+                        <video poster="" id="shiba" autoplay controls muted loop height="100%">
+                            <source src="static/nuscenes/82bfca2a2fad4589bce8acee7dd5d794.mp4" type="video/mp4">
+                        </video>
+                        <img src="static/nuscenes/82bfca2a2fad4589bce8acee7dd5d794.jpg" />
+                    </div>
+                    <div class="item item-chair-tp">
+                        <video poster="" id="chair-tp" autoplay controls muted loop height="100%">
+                            <source src="static/nuscenes/9adba99929b5432998dff5aefdfc0178.mp4" type="video/mp4">
+                        </video>
+                        <img src="static/nuscenes/9adba99929b5432998dff5aefdfc0178.jpg" />
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </section> -->
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <!-- Abstract. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            We base our work on <a href="https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/">3D Gaussian Splatting</a> (3DGS), a scene representation composed of a mixture of Gaussians.
+            Predicting such mixtures for a human from a single input image is challenging, as it is a non-uniform density (with a many-to-one relationship with input pixels) with strict physical constraints. At the same time, it needs to be flexible to accommodate a variety of clothes and poses.
+            Our key observation is that the vertices of standardized human meshes (such as SMPL) can provide an adequate density and approximate initial position for Gaussians. We can then train a model to predict comparatively small adjustments to these positions, as well as the Gaussians' colors.
+            We show empirically that this combination (using only multi-view supervision) can achieve fast inference of 3D human models from a single image without test-time optimization, expensive diffusion models, or 3D points supervision.
+            We also show that it can improve 3D pose estimation by better fitting human models that account for clothes and other variations.
+          </div>
+        </div>
+      </div>
+      <!--/ Abstract. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Pipeline</h2>
+          <div class="content has-text-justified">
+            <div class="content has-text-centered">
+              <div class="vsc-controller"></div>
+              <img src="static/assets/pipeline/pipeline.png" width="100%">
+            </div>
+            Given a single input image, GST uses a Vision Transformer (ViT) to predict both a 3D human pose (in the form of SMPL parameters) and a refined full-color 3D model (in the form of 3D Gaussian Splats). Additional input tokens facilitate the output of individual Gaussians’ color c, opacity α, scale, rotation, and position offset δ. Each
+            Gaussian’s position μ is relative to one vertex of the SMPL model v by the offset δ, and so this model can be considered a refinement or residual over the interpretable SMPL mesh, facilitating multi-view rendering with higher visual fidelity.
+          </div>
+        </div>
+      </div>
+      <!-- Paper video. -->
+      <!-- <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Video</h2>
+          <div class="publication-video">
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/VcjypZ0hp4w" title="YouTube video player"
+            frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen></iframe>
+          </div>
+        </div>
+      </div> -->
+      <!--/ Paper video. -->
+    </div>
+  </section>
+
+
+  <!-- <section class="section">
+    <div class="container is-max-desktop">
+
+      <h3 class="title is-4">Radiance Field Synthesis</h3>
+      <div class="content has-text-justified">
+        <p>
+          Our 3D denoising diffusion probabilistic model learns to synthesize diverse radiance fields that enable
+          high-quality rendering with accurate geometry.
+        </p>
+      </div>
+      <div class="colums is-centered">
+        <div class="column">
+          <div class="content">
+            <div class="vsc-controller"></div>
+            <video id="photoshape_uncond" autoplay="" muted="" playsinline loop="">
+              <source src="static/results/photoshape_res.mov" type="video/mp4">
+            </video>
+            <script>
+              var v = document.getElementById("photoshape_uncond");
+              v.playbackRate = 1.0;
+            </script>
+            <h4 class="  has-text-centered">
+              Unconditional synthesis results on PhotoShape Chairs
+            </h4>
+
+          </div>
+        </div>
+        <div class="column">
+          <div class="content">
+            <div class="vsc-controller"></div>
+            <video id="abo_res" autoplay="" muted="" playsinline loop="">
+              <source src="static/results/abo_res.mov" type="video/mp4">
+            </video>
+            <script>
+              var v = document.getElementById("abo_res");
+              v.playbackRate = 1.0;
+            </script>
+            <h4 class="  has-text-centered">
+              Unconditional synthesis results on ABO Tables
+            </h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section> -->
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+
+      
+      <h3 class="title is-4">Predicting 3D SMPL Parameters and 3D Gaussian Splats from a Single Image</h3>
+      <!-- <span class="dnerf">sparf</span> is a large dataset of Sparse Radiance Fields (SRFs) on multiple voxel resolutions: 32<sup>3</sup>, 128<sup>3</sup>, and 512<sup>3</sup>. -->
+      <br> <br>
+        <p >
+        <span style="display: inline-block; width: 16%; text-align: center; font-size: larger; font-weight: bold;">Input</span>
+        <span style="display: inline-block; width: 16%; text-align: center; font-size: larger; font-weight: bold;">Out SMPL</span>
+        <span style="display: inline-block; width: 16%; text-align: center; font-size: larger; font-weight: bold;">Out 3DGS</span>
+        <span style="display: inline-block; width: 16%; text-align: center; font-size: larger; font-weight: bold;">Input</span>
+        <span style="display: inline-block; width: 16%; text-align: center; font-size: larger; font-weight: bold;">Out SMPL</span>
+        <span style="display: inline-block; width: 16%; text-align: center; font-size: larger; font-weight: bold;">Out 3DGS</span>
+
+        </p>
+
+      <div class="content has-text-centered">
+        <div class="vsc-controller"></div>
+        <img src="static/assets/examples/run2/input.png" width="16%">
+        <video id="masking_examples" autoplay="" muted="" playsinline loop="" width="16%">
+          <source src="static/assets/examples/run2/out_smpl.mp4" type="video/mp4">
+        </video>
+        <video id="masking_examples" autoplay="" muted="" playsinline loop="" width="16%">
+          <source src="static/assets/examples/run2/out.mp4" type="video/mp4">
+        </video>
+        <img src="static/assets/examples/run16/input.png" width="16%">
+        <video id="masking_examples" autoplay="" muted="" playsinline loop="" width="16%">
+          <source src="static/assets/examples/run16/out_smpl.mp4" type="video/mp4">
+        </video>
+        <video id="masking_examples" autoplay="" muted="" playsinline loop="" width="16%">
+          <source src="static/assets/examples/run16/out.mp4" type="video/mp4">
+        </video>
+        <script>
+          var v = document.getElementById("teaser");
+          v.playbackRate = 1.0;
+        </script>
+        <div class="content has-text-centered">
+          <div class="vsc-controller"></div>
+          <img src="static/assets/examples/run17/input.png" width="16%">
+          <video id="masking_examples" autoplay="" muted="" playsinline loop="" width="16%">
+            <source src="static/assets/examples/run17/out_smpl.mp4" type="video/mp4">
+          </video>
+          <video id="masking_examples" autoplay="" muted="" playsinline loop="" width="16%">
+            <source src="static/assets/examples/run17/out.mp4" type="video/mp4">
+          </video>
+          <img src="static/assets/examples/run5/input.png" width="16%">
+          <video id="masking_examples" autoplay="" muted="" playsinline loop="" width="16%">
+            <source src="static/assets/examples/run5/out_smpl.mp4" type="video/mp4">
+          </video>
+          <video id="masking_examples" autoplay="" muted="" playsinline loop="" width="16%">
+            <source src="static/assets/examples/run5/out.mp4" type="video/mp4">
+          </video>
+          <script>
+            var v = document.getElementById("teaser");
+            v.playbackRate = 1.0;
+          </script>
+          <div class="content has-text-centered">
+            <div class="vsc-controller"></div>
+            <img src="static/assets/examples/run6/input.png" width="16%">
+            <video id="masking_examples" autoplay="" muted="" playsinline loop="" width="16%">
+              <source src="static/assets/examples/run6/out_smpl.mp4" type="video/mp4">
+            </video>
+            <video id="masking_examples" autoplay="" muted="" playsinline loop="" width="16%">
+              <source src="static/assets/examples/run6/out.mp4" type="video/mp4">
+            </video>
+            <img src="static/assets/examples/run1/input.png" width="16%">
+            <video id="masking_examples" autoplay="" muted="" playsinline loop="" width="16%">
+              <source src="static/assets/examples/run1/out_smpl.mp4" type="video/mp4">
+            </video>
+            <video id="masking_examples" autoplay="" muted="" playsinline loop="" width="16%">
+              <source src="static/assets/examples/run1/out.mp4" type="video/mp4">
+            </video>
+            <script>
+              var v = document.getElementById("teaser");
+              v.playbackRate = 1.0;
+            </script>
+            <div class="content has-text-centered">
+              <div class="vsc-controller"></div>
+              <img src="static/assets/examples/run8/input.png" width="16%">
+              <video id="masking_examples" autoplay="" muted="" playsinline loop="" width="16%">
+                <source src="static/assets/examples/run8/out_smpl.mp4" type="video/mp4">
+              </video>
+              <video id="masking_examples" autoplay="" muted="" playsinline loop="" width="16%">
+                <source src="static/assets/examples/run8/out.mp4" type="video/mp4">
+              </video>
+              <img src="static/assets/examples/run9/input.png" width="16%">
+              <video id="masking_examples" autoplay="" muted="" playsinline loop="" width="16%">
+                <source src="static/assets/examples/run9/out_smpl.mp4" type="video/mp4">
+              </video>
+              <video id="masking_examples" autoplay="" muted="" playsinline loop="" width="16%">
+                <source src="static/assets/examples/run9/out.mp4" type="video/mp4">
+              </video>
+              <script>
+                var v = document.getElementById("teaser");
+                v.playbackRate = 1.0;
+              </script>
+              <div class="content has-text-centered">
+                <div class="vsc-controller"></div>
+                <img src="static/assets/examples/run10/input.png" width="16%">
+                <video id="masking_examples" autoplay="" muted="" playsinline loop="" width="16%">
+                  <source src="static/assets/examples/run10/out_smpl.mp4" type="video/mp4">
+                </video>
+                <video id="masking_examples" autoplay="" muted="" playsinline loop="" width="16%">
+                  <source src="static/assets/examples/run10/out.mp4" type="video/mp4">
+                </video>
+                <img src="static/assets/examples/run11/input.png" width="16%">
+                <video id="masking_examples" autoplay="" muted="" playsinline loop="" width="16%">
+                  <source src="static/assets/examples/run11/out_smpl.mp4" type="video/mp4">
+                </video>
+                <video id="masking_examples" autoplay="" muted="" playsinline loop="" width="16%">
+                  <source src="static/assets/examples/run11/out.mp4" type="video/mp4">
+                </video>
+                <script>
+                  var v = document.getElementById("teaser");
+                  v.playbackRate = 1.0;
+                </script>
+                <div class="content has-text-centered">
+                  <div class="vsc-controller"></div>
+                  <img src="static/assets/examples/run12/input.png" width="16%">
+                  <video id="masking_examples" autoplay="" muted="" playsinline loop="" width="16%">
+                    <source src="static/assets/examples/run12/out_smpl.mp4" type="video/mp4">
+                  </video>
+                  <video id="masking_examples" autoplay="" muted="" playsinline loop="" width="16%">
+                    <source src="static/assets/examples/run12/out.mp4" type="video/mp4">
+                  </video>
+                  <img src="static/assets/examples/run13/input.png" width="16%">
+                  <video id="masking_examples" autoplay="" muted="" playsinline loop="" width="16%">
+                    <source src="static/assets/examples/run13/out_smpl.mp4" type="video/mp4">
+                  </video>
+                  <video id="masking_examples" autoplay="" muted="" playsinline loop="" width="16%">
+                    <source src="static/assets/examples/run13/out.mp4" type="video/mp4">
+                  </video>
+                  <script>
+                    var v = document.getElementById("teaser");
+                    v.playbackRate = 1.0;
+                  </script>
+                  <div class="columns is-centered has-text-centered">
+                    <div class="column is-four-fifths">
+                      <h2 class="title is-3">Video</h2>
+                      <div class="publication-video">
+                      <iframe width="560" height="315" src="https://www.youtube.com/embed/VcjypZ0hp4w" title="YouTube video player"
+                        frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen></iframe>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+                <!-- <h2 class=" subtitle has-text-centered">
+        <div class="column is-3">
+          <div class="content">
+           32
+      </div>
+      </div>
+      </h2> -->
+
+
+    <section class="section">
+      <div class="container is-max-desktop">
+    
+        
+        <h3 class="title is-4">Comparisons (Speed)</h3>
+                      <div class="content has-text-centered">
+                        <div class="vsc-controller"></div>
+                        <img src="static/assets/tables/table.png" width="100%">
+                      </div>
+
+                        <div class="container is-max-desktop">
+                        <h3 class="title is-4">Comparisons (to 3D Pose Methods)</h3>
+                          <div class="content has-text-centered">
+                          <div class="vsc-controller"></div>
+                          <img src="static/assets/comparison/res-3d.png" width="100%">
+                        </div>
+
+                          <div class="container is-max-desktop">
+                          <h3 class="title is-4">Comparisons (to Human Novel Views Methods)</h3>
+                          <div class="content has-text-centered">
+                          <div class="vsc-controller"></div>
+                          <img src="static/assets/comparison/res-humman.png" width="100%">
+
+        </div>
+    </section>
+        <section class="section">
+
+        </section>
+
+    <section class="section">
+      <div class="container is-max-desktop">       
+    <!-- </section>
+  </div> -->
+
+
+      <!--/ Animation. -->
+
+
+      <!-- Concurrent Work. -->
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Related Links</h2>
+
+          <div class="content has-text-justified">
+            <!-- <p>
+              For some more 3D radiance fields generation works, please also check out
+            </p> -->
+            <p>
+              <a href="https://skhu101.github.io/SHERF/">SHERF: Generalizable Human NeRF from a Single Image</a> 
+            </p>
+            <a href="https://szymanowiczs.github.io/splatter-image">Splatter Image: Ultra-Fast Single-View
+              3D Reconstruction</a>
+            <p></p>
+            <p>
+              <a href="https://shubham-goel.github.io/4dhumans/">Humans in 4D: Reconstructing and Tracking Humans with Transformers</a>
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>@InProceedings{gst_2024,
+    }
+            </code>
+        </pre>
+    </div>
+  </section>
+
+
+
+
+
+  <footer class="footer">
+    <div class="container">
+      <div class="content has-text-centered">
+        <a class="icon-link" href="https://abdullahamdi.com/sparf/static/assets/gst.pdf">
+          <svg class="svg-inline--fa fa-file-pdf fa-w-12" aria-hidden="true" focusable="false" data-prefix="fas"
+            data-icon="file-pdf" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" data-fa-i2svg="">
+            <path fill="currentColor"
+              d="M181.9 256.1c-5-16-4.9-46.9-2-46.9 8.4 0 7.6 36.9 2 46.9zm-1.7 47.2c-7.7 20.2-17.3 43.3-28.4 62.7 18.3-7 39-17.2 62.9-21.9-12.7-9.6-24.9-23.4-34.5-40.8zM86.1 428.1c0 .8 13.2-5.4 34.9-40.2-6.7 6.3-29.1 24.5-34.9 40.2zM248 160h136v328c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V24C0 10.7 10.7 0 24 0h200v136c0 13.2 10.8 24 24 24zm-8 171.8c-20-12.2-33.3-29-42.7-53.8 4.5-18.5 11.6-46.6 6.2-64.2-4.7-29.4-42.4-26.5-47.8-6.8-5 18.3-.4 44.1 8.1 77-11.6 27.6-28.7 64.6-40.8 85.8-.1 0-.1.1-.2.1-27.1 13.9-73.6 44.5-54.5 68 5.6 6.9 16 10 21.5 10 17.9 0 35.7-18 61.1-61.8 25.8-8.5 54.1-19.1 79-23.2 21.7 11.8 47.1 19.5 64 19.5 29.2 0 31.2-32 19.7-43.4-13.9-13.6-54.3-9.7-73.6-7.2zM377 105L279 7c-4.5-4.5-10.6-7-17-7h-6v128h128v-6.1c0-6.3-2.5-12.4-7-16.9zm-74.1 255.3c4.1-2.7-2.5-11.9-42.8-9 37.1 15.8 42.8 9 42.8 9z">
+            </path>
+          </svg><!-- <i class="fas fa-file-pdf"></i> Font Awesome fontawesome.com -->
+        </a>
+        <a class="icon-link" href="https://github.com/ajhamdi" disabled="">
+          <svg class="svg-inline--fa fa-github fa-w-16" aria-hidden="true" focusable="false" data-prefix="fab"
+            data-icon="github" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" data-fa-i2svg="">
+            <path fill="currentColor"
+              d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z">
+            </path>
+          </svg><!-- <i class="fab fa-github"></i> Font Awesome fontawesome.com -->
+        </a>
+      </div>
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p style="text-align:center">
+              Source code mainly borrowed from <a href="https://keunhong.com/">Keunhong Park</a>'s <a
+                href="https://nerfies.github.io/">Nerfies website</a>.
+            </p>
+            <p style="text-align:center">
+              Please contact <a href="https://abdullahamdi.com/">Abdullah Hamdi</a> for feedback and questions.
+            </p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+
+
+</body>
+<grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration>
+
+</html>
