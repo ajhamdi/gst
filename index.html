@@ -181,7 +181,7 @@
         </p>
         <br>
         <h2 class=" subtitle has-text-centered">
-          given a <em>single</em> input image, Gaussian Splatting Transformers <em>(GST)</em> predicts precise 3D human pose and shape, and a color model that enables novel view rendering including clothes.         <br> GST is fast (50 FPS) and relies only on multi-view supervision (<em>no 3D supervision used</em>).
+          given a <em>single</em> input image, Gaussian Splatting Transformers <em>(GST)</em> predicts precise 3D human pose and shape, and a color model that enables novel view rendering including clothes.         <br> GST is fast (50 FPS) and relies only on multi-view supervision (<em>no direct 3D supervision</em>).
         </h2>
 
 
@@ -237,7 +237,7 @@
       <!-- Abstract. -->
       <div class="columns is-centered has-text-centered">
         <div class="column is-four-fifths">
-          <h2 class="title is-3">Abstract</h2>
+          <h2 class="title is-4">Abstract</h2>
           <div class="content has-text-justified">
             We base our work on <a href="https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/">3D Gaussian Splatting</a> (3DGS), a scene representation composed of a mixture of Gaussians.
             Predicting such mixtures for a human from a single input image is challenging, as it is a non-uniform density (with a many-to-one relationship with input pixels) with strict physical constraints. At the same time, it needs to be flexible to accommodate a variety of clothes and poses.
@@ -250,7 +250,7 @@
       <!--/ Abstract. -->
       <div class="columns is-centered has-text-centered">
         <div class="column is-four-fifths">
-          <h2 class="title is-3">Pipeline</h2>
+          <h2 class="title is-4">Pipeline</h2>
           <div class="content has-text-justified">
             <div class="content has-text-centered">
               <div class="vsc-controller"></div>
@@ -264,7 +264,7 @@
       <!-- Paper video. -->
       <!-- <div class="columns is-centered has-text-centered">
         <div class="column is-four-fifths">
-          <h2 class="title is-3">Video</h2>
+          <h2 class="title is-4">Video</h2>
           <div class="publication-video">
           <iframe width="560" height="315" src="https://www.youtube.com/embed/VcjypZ0hp4w" title="YouTube video player"
             frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -327,8 +327,12 @@
   <section class="section">
     <div class="container is-max-desktop">
 
-      
-      <h3 class="title is-4">Predicting 3D SMPL Parameters and 3D Gaussian Splats from a Single Image</h3>
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-4">Predicting 3D SMPL Parameters and 3D Gaussian Splats from a Single Image</h2>
+          </div>
+          </div>
+      <!-- <h3 class="title is-4">Predicting 3D SMPL Parameters and 3D Gaussian Splats from a Single Image</h3> -->
       <!-- <span class="dnerf">sparf</span> is a large dataset of Sparse Radiance Fields (SRFs) on multiple voxel resolutions: 32<sup>3</sup>, 128<sup>3</sup>, and 512<sup>3</sup>. -->
       <br> <br>
         <p >
@@ -463,9 +467,9 @@
                   </script>
                   <div class="columns is-centered has-text-centered">
                     <div class="column is-four-fifths">
-                      <h2 class="title is-3">Video</h2>
+                      <h2 class="title is-4">Video</h2>
                       <div class="publication-video">
-                      <iframe width="560" height="315" src="https://www.youtube.com/embed/VcjypZ0hp4w" title="YouTube video player"
+                      <iframe width="560" height="315" src="https://www.youtube.com/embed/nlo6VN_WXrs" title="YouTube video player"
                         frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen></iframe>
                       </div>
@@ -473,7 +477,7 @@
                   </div>
                 </section>
                 <!-- <h2 class=" subtitle has-text-centered">
-        <div class="column is-3">
+        <div class="column is-4">
           <div class="content">
            32
       </div>
@@ -483,23 +487,28 @@
 
     <section class="section">
       <div class="container is-max-desktop">
-    
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-4">Comparisons</h2>
+            </div>
+            </div>
+
         
-        <h3 class="title is-4">Comparisons (Speed)</h3>
+        <h3 class="title is-5">Speed:</h3>
                       <div class="content has-text-centered">
                         <div class="vsc-controller"></div>
                         <img src="static/assets/tables/table.png" width="100%">
                       </div>
 
                         <div class="container is-max-desktop">
-                        <h3 class="title is-4">Comparisons (to 3D Pose Methods)</h3>
+                        <h3 class="title is-5">3D Pose Methods</h3>
                           <div class="content has-text-centered">
                           <div class="vsc-controller"></div>
                           <img src="static/assets/comparison/res-3d.png" width="100%">
                         </div>
 
                           <div class="container is-max-desktop">
-                          <h3 class="title is-4">Comparisons (to Human Novel Views Methods)</h3>
+                          <h3 class="title is-5">Human Novel Views Methods:</h3>
                           <div class="content has-text-centered">
                           <div class="vsc-controller"></div>
                           <img src="static/assets/comparison/res-humman.png" width="100%">
@@ -522,7 +531,7 @@
       <!-- Concurrent Work. -->
       <div class="columns is-centered">
         <div class="column is-full-width">
-          <h2 class="title is-3">Related Links</h2>
+          <h2 class="title is-4">Related Links</h2>
 
           <div class="content has-text-justified">
             <!-- <p>
@@ -562,7 +571,7 @@
   <footer class="footer">
     <div class="container">
       <div class="content has-text-centered">
-        <a class="icon-link" href="https://abdullahamdi.com/sparf/static/assets/gst.pdf">
+        <a class="icon-link" href="https://abdullahamdi.com/gst/static/assets/gst.pdf">
           <svg class="svg-inline--fa fa-file-pdf fa-w-12" aria-hidden="true" focusable="false" data-prefix="fas"
             data-icon="file-pdf" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" data-fa-i2svg="">
             <path fill="currentColor"
